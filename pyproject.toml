@@ -1,0 +1,33 @@
+[project]
+name = "aseprite-ini"
+version = "0.0.0"
+description = "A tool to parse Aseprite '.ini' format file."
+readme = "README.md"
+license = { text = "MIT License" }
+requires-python = ">=3.10"
+authors = [
+    { name = "Aseprite Quest" },
+]
+maintainers = [
+    { name = "Aseprite Quest" },
+]
+keywords = ["aseprite"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "requests>=2.31.0",
+]
+
+[project.urls]
+homepage = "https://github.com/aseprite-quest/aseprite-ini"
+source = "https://github.com/aseprite-quest/aseprite-ini"
+issues = "https://github.com/aseprite-quest/aseprite-ini/issues"
+
+[tool.pytest.ini_options]
+pythonpath = [
+    "src",
+]
