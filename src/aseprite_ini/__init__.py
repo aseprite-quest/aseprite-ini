@@ -83,6 +83,15 @@ class Aseini(UserDict[str, dict[str, str]]):
             headers = list[str]()
         self.headers = headers
 
+    def patch(self, other: 'Aseini'):
+        for section_name, other_section in other.items():
+            if section_name in self:
+                section = self[section_name]
+            else:
+                section = dict[str, str]()
+                self[section_name] = section
+            section.update(other_section)
+
     def fallback(self, other: 'Aseini'):
         for section_name, other_section in other.items():
             if section_name in self:
