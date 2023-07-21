@@ -19,6 +19,17 @@ def test_load():
     assert strings_en['game_mode']['message'] == '<<<END\nThis is Game Mode.\nEND'
 
 
+def test_patch():
+    strings_en = Aseini.load(os.path.join(assets_dir, 'en.ini'))
+    strings_en.patch(Aseini.load(os.path.join(assets_dir, 'en-old.ini')))
+    assert len(strings_en.headers) == 3
+    assert strings_en.headers[0] == 'Header 1'
+    assert strings_en.headers[1] == 'Header 2'
+    assert strings_en.headers[2] == 'Header 3'
+    assert strings_en['game_mode']['title'] == 'Game Mode - Old'
+    assert strings_en['legacy_mode']['title'] == 'Legacy Mode - Old'
+
+
 def test_fallback():
     strings_en = Aseini.load(os.path.join(assets_dir, 'en.ini'))
     strings_en.fallback(Aseini.load(os.path.join(assets_dir, 'en-old.ini')))
