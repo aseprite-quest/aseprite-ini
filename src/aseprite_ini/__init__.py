@@ -67,11 +67,15 @@ class Aseini(UserDict[str, dict[str, str]]):
             return Aseini.decode_str(file.read())
 
     @staticmethod
-    def pull_strings(tag_name: str = 'main', lang: str = 'en') -> 'Aseini':
-        url = f'https://raw.githubusercontent.com/aseprite/aseprite/{tag_name}/data/strings/{lang}.ini'
+    def pull_strings_by_url(url: str) -> 'Aseini':
         response = requests.get(url)
         assert response.ok, url
         return Aseini.decode_str(response.text)
+
+    @staticmethod
+    def pull_strings(tag_name: str = 'main', lang: str = 'en') -> 'Aseini':
+        url = f'https://raw.githubusercontent.com/aseprite/aseprite/{tag_name}/data/strings/{lang}.ini'
+        return Aseini.pull_strings_by_url(url)
 
     def __init__(self, headers: list[str] = None):
         super().__init__()
