@@ -122,6 +122,8 @@ class Aseini(UserDict[str, dict[str, str]]):
             lines.append(f'# {header}')
         lines.append('')
         for section_name, source_section in source.items():
+            if len(source_section) <= 0:
+                continue
             lines.append(f'[{section_name}]')
             for key, source_value in source_section.items():
                 value = None
