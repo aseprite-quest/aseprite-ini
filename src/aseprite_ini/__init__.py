@@ -1,6 +1,6 @@
 import os
 from collections import UserDict
-from typing import Iterable
+from collections.abc import Iterable
 
 import requests
 
@@ -8,7 +8,7 @@ import requests
 class Aseini(UserDict[str, dict[str, str]]):
     @staticmethod
     def decode(lines: Iterable[str]) -> 'Aseini':
-        headers = list[str]()
+        headers = []
         for line in lines:
             line = line.strip()
             if not line.startswith('#'):
@@ -30,7 +30,7 @@ class Aseini(UserDict[str, dict[str, str]]):
                 if section_name in ini:
                     section = ini[section_name]
                 else:
-                    section = dict[str, str]()
+                    section = {}
                     ini[section_name] = section
             elif '=' in line:
                 if section is None:
@@ -80,7 +80,7 @@ class Aseini(UserDict[str, dict[str, str]]):
     def __init__(self, headers: list[str] = None):
         super().__init__()
         if headers is None:
-            headers = list[str]()
+            headers = []
         self.headers = headers
 
     def patch(self, other: 'Aseini'):
@@ -88,7 +88,7 @@ class Aseini(UserDict[str, dict[str, str]]):
             if section_name in self:
                 section = self[section_name]
             else:
-                section = dict[str, str]()
+                section = {}
                 self[section_name] = section
             section.update(other_section)
 
@@ -97,7 +97,7 @@ class Aseini(UserDict[str, dict[str, str]]):
             if section_name in self:
                 section = self[section_name]
             else:
-                section = dict[str, str]()
+                section = {}
                 self[section_name] = section
             for key, value in other_section.items():
                 if key not in section:
@@ -117,7 +117,7 @@ class Aseini(UserDict[str, dict[str, str]]):
         if source is None:
             source = self
 
-        lines = list[str]()
+        lines = []
         for header in self.headers:
             lines.append(f'# {header}')
         lines.append('')
