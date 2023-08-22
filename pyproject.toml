@@ -1,3 +1,7 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project]
 name = "aseprite-ini"
 version = "0.0.2"
@@ -28,6 +32,7 @@ source = "https://github.com/aseprite-quest/aseprite-ini"
 issues = "https://github.com/aseprite-quest/aseprite-ini/issues"
 
 [tool.pytest.ini_options]
-pythonpath = [
-    "src",
+pythonpath = "src"
+addopts = [
+    "--import-mode=importlib",
 ]
