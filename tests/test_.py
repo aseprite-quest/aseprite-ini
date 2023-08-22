@@ -1,10 +1,13 @@
 import os
+from pathlib import Path
 
 from aseprite_ini import Aseini
-from tests import assets_dir, outputs_dir
+
+project_root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+assets_dir = os.path.join(project_root_dir, 'assets')
 
 
-def read_str(file_path: str) -> str:
+def _read_str(file_path: str) -> str:
     with open(file_path, 'r', encoding='utf-8') as file:
         return file.read()
 
@@ -53,7 +56,7 @@ def test_encode_1():
     strings_en = Aseini.load(os.path.join(assets_dir, 'en.ini'))
     strings_en['blank_section'] = {}
     text = strings_en.encode_str()
-    text2 = read_str(os.path.join(assets_dir, 'en-clean.ini'))
+    text2 = _read_str(os.path.join(assets_dir, 'en-clean.ini'))
     assert text == text2
 
 
@@ -61,7 +64,7 @@ def test_encode_2():
     strings_en = Aseini.load(os.path.join(assets_dir, 'en.ini'))
     strings_zh = Aseini.load(os.path.join(assets_dir, 'zh.ini'))
     text = strings_zh.encode_str(strings_en)
-    text2 = read_str(os.path.join(assets_dir, 'zh-todo.ini'))
+    text2 = _read_str(os.path.join(assets_dir, 'zh-todo.ini'))
     assert text == text2
 
 
@@ -81,11 +84,11 @@ def test_alphabet_2():
     assert text == '。式戏是模池游电这'
 
 
-def test_save():
+def test_save(tmp_path: Path):
     strings_en = Aseini.load(os.path.join(assets_dir, 'en.ini'))
     strings_zh = Aseini.load(os.path.join(assets_dir, 'zh.ini'))
-    strings_zh.save(os.path.join(outputs_dir, 'zh.ini'), strings_en)
-    strings_zh.save_alphabet(os.path.join(outputs_dir, 'zh.txt'))
+    strings_zh.save(os.path.join(tmp_path, 'zh.ini'), strings_en)
+    strings_zh.save_alphabet(os.path.join(tmp_path, 'zh.txt'))
 
 
 def test_pull():
