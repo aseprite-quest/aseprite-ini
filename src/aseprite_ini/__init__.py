@@ -1,4 +1,5 @@
 import os
+import re
 from collections import UserDict
 from collections.abc import Iterable
 
@@ -59,7 +60,7 @@ class Aseini(UserDict[str, dict[str, str]]):
 
     @staticmethod
     def decode_str(text: str) -> 'Aseini':
-        return Aseini.decode(text.split('\n'))
+        return Aseini.decode(re.split(r'\r\n|\r|\n', text))
 
     @staticmethod
     def load(file_path: str | bytes | os.PathLike[str] | os.PathLike[bytes]) -> 'Aseini':
@@ -131,14 +132,14 @@ class Aseini(UserDict[str, dict[str, str]]):
                     value = self[section_name][key]
                 if source_value.startswith('<<<'):
                     if value is None:
-                        for index, value_line in enumerate(source_value.split('\n')):
+                        for index, value_line in enumerate(re.split(r'\r\n|\r|\n', source_value)):
                             if index == 0:
                                 lines.append(f'# TODO # {key} = {value_line}')
                             else:
                                 lines.append(f'# TODO # {value_line}')
                     else:
                         assert value.startswith('<<<'), f"value type incorrect: '{section_name}.{key}'"
-                        for index, value_line in enumerate(value.split('\n')):
+                        for index, value_line in enumerate(re.split(r'\r\n|\r|\n', value)):
                             if index == 0:
                                 lines.append(f'{key} = {value_line}')
                             else:
@@ -164,7 +165,7 @@ class Aseini(UserDict[str, dict[str, str]]):
         for section in self.values():
             for value in section.values():
                 if value.startswith('<<<'):
-                    tag = value.split('\n')[0].removeprefix('<<<')
+                    tag = re.split(r'\r\n|\r|\n', value)[0].removeprefix('<<<')
                     value = value.removeprefix(f'<<<{tag}').removesuffix(tag).replace('\n', '')
                 for c in value:
                     alphabet.add(c)
