@@ -74,7 +74,7 @@ class Aseini(UserDict[str, dict[str, str]]):
         return Aseini.decode_str(response.text)
 
     @staticmethod
-    def pull_strings(tag_name: str = 'main', lang: str = 'en') -> 'Aseini':
+    def pull_strings(tag_name: str, lang: str = 'en') -> 'Aseini':
         url = f'https://raw.githubusercontent.com/aseprite/aseprite/{tag_name}/data/strings/{lang}.ini'
         return Aseini.pull_strings_by_url(url)
 
