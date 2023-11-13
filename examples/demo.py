@@ -6,7 +6,7 @@ from examples import assets_dir, build_dir
 
 def main():
     strings_en = Aseini.pull_strings('main')
-    strings_en.fallback(Aseini.pull_strings('v1.3-rc6'))
+    strings_en.fallback(Aseini.pull_strings('v1.3-rc7'))
     strings_en.fallback(Aseini.pull_strings('v1.2.40'))
     strings_en.save(os.path.join(build_dir, 'en.ini'))
 
