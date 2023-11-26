@@ -93,5 +93,5 @@ def test_save(tmp_path: Path):
 
 def test_pull():
     Aseini.pull_strings('main')
-    Aseini.pull_strings('v1.3-rc8')
+    Aseini.pull_strings('v1.3-rc9')
     Aseini.pull_strings('v1.2.40')
