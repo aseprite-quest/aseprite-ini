@@ -41,15 +41,14 @@ class Aseini(UserDict[str, dict[str, str]]):
                 key = tokens[0].strip()
                 tail = tokens[1].strip()
                 if tail.startswith('<<<'):
-                    buffer = [tail]
+                    buffer = []
                     tag = tail.removeprefix('<<<')
                     for value_line in lines_iterator:
                         line_num += 1
                         if value_line.strip() == tag:
                             break
                         buffer.append(value_line.rstrip())
-                    buffer.append(tag)
-                    value = '\n'.join(buffer)
+                    value = '\\n'.join(buffer)
                 else:
                     value = tail
                 if key not in section:
@@ -127,29 +126,14 @@ class Aseini(UserDict[str, dict[str, str]]):
                 continue
             lines.append(f'[{section_name}]')
             for key, source_value in source_section.items():
-                value = None
                 if section_name in self and key in self[section_name]:
                     value = self[section_name][key]
-                if source_value.startswith('<<<'):
-                    if value is None:
-                        for index, value_line in enumerate(re.split(r'\r\n|\r|\n', source_value)):
-                            if index == 0:
-                                lines.append(f'# TODO # {key} = {value_line}')
-                            else:
-                                lines.append(f'# TODO # {value_line}')
-                    else:
-                        assert value.startswith('<<<'), f"value type incorrect: '{section_name}.{key}'"
-                        for index, value_line in enumerate(re.split(r'\r\n|\r|\n', value)):
-                            if index == 0:
-                                lines.append(f'{key} = {value_line}')
-                            else:
-                                lines.append(value_line)
                 else:
-                    if value is None:
-                        lines.append(f'# TODO # {key} = {source_value}')
-                    else:
-                        assert not value.startswith('<<<'), f"value type incorrect: '{section_name}.{key}'"
-                        lines.append(f'{key} = {value}')
+                    value = None
+                if value is None:
+                    lines.append(f'# TODO # {key} = {source_value}')
+                else:
+                    lines.append(f'{key} = {value}')
             lines.append('')
         return lines
 
@@ -164,11 +148,8 @@ class Aseini(UserDict[str, dict[str, str]]):
         alphabet = set()
         for section in self.values():
             for value in section.values():
-                if value.startswith('<<<'):
-                    tag = re.split(r'\r\n|\r|\n', value)[0].removeprefix('<<<')
-                    value = value.removeprefix(f'<<<{tag}').removesuffix(tag).replace('\n', '')
-                for c in value:
-                    alphabet.add(c)
+                value = value.replace('\\n', '')
+                alphabet.update(value)
         return alphabet
 
     def save_alphabet(self, file_path: str | bytes | os.PathLike[str] | os.PathLike[bytes]):

@@ -19,7 +19,7 @@ def test_load():
     assert strings_en.headers[1] == 'Header 2'
     assert strings_en.headers[2] == 'Header 3'
     assert strings_en['game_mode']['title'] == 'Game Mode'
-    assert strings_en['game_mode']['message'] == '<<<END\nThis is Game Mode.\nEND'
+    assert strings_en['game_mode']['message'] == 'This is\\nGame Mode.'
 
 
 def test_patch():
@@ -48,7 +48,7 @@ def test_coverage():
     strings_en = Aseini.load(os.path.join(assets_dir, 'en.ini'))
     strings_zh = Aseini.load(os.path.join(assets_dir, 'zh.ini'))
     translated, total = strings_zh.coverage(strings_en)
-    assert total == 6
+    assert total == 7
     assert translated == 4
 
 
@@ -73,7 +73,7 @@ def test_alphabet_1():
     alphabet = list(strings_en.alphabet())
     alphabet.sort()
     text = ''.join(alphabet)
-    assert text == ' .BGMSTadefhimorsty'
+    assert text == ' .BEGMSTadefghilmnorsty'
 
 
 def test_alphabet_2():
