@@ -70,6 +70,7 @@ class Aseini(UserDict[str, dict[str, str]]):
     def pull_strings_by_url(url: str) -> 'Aseini':
         response = requests.get(url)
         assert response.ok, url
+        response.encoding = 'utf-8'
         return Aseini.decode_str(response.text)
 
     @staticmethod
