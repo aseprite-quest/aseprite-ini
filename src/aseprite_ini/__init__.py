@@ -114,7 +114,11 @@ class Aseini(UserDict[str, dict[str, str]]):
                     translated += 1
         return translated, total
 
-    def encode(self, source: 'Aseini' = None) -> list[str]:
+    def encode(
+            self,
+            source: 'Aseini' = None,
+            old_format: bool = False,
+    ) -> list[str]:
         if source is None:
             source = self
 
@@ -130,20 +134,30 @@ class Aseini(UserDict[str, dict[str, str]]):
                 if section_name in self and key in self[section_name]:
                     value = self[section_name][key]
                 else:
-                    value = None
-                if value is None:
-                    lines.append(f'# TODO # {key} = {source_value}')
-                else:
-                    lines.append(f'{key} = {value}')
+                    key = f'# TODO # {key}'
+                    value = source_value
+                if '\\n' in value and old_format:
+                    value = value.replace('\\n', '\n')
+                    value = f'<<<END\n{value}\nEND'
+                lines.append(f'{key} = {value}')
             lines.append('')
         return lines
 
-    def encode_str(self, source: 'Aseini' = None) -> str:
-        return '\n'.join(self.encode(source))
+    def encode_str(
+            self,
+            source: 'Aseini' = None,
+            old_format: bool = False,
+    ) -> str:
+        return '\n'.join(self.encode(source, old_format))
 
-    def save(self, file_path: str | bytes | os.PathLike[str] | os.PathLike[bytes], source: 'Aseini' = None):
+    def save(
+            self,
+            file_path: str | bytes | os.PathLike[str] | os.PathLike[bytes],
+            source: 'Aseini' = None,
+            old_format: bool = False,
+    ):
         with open(file_path, 'w', encoding='utf-8') as file:
-            file.write(self.encode_str(source))
+            file.write(self.encode_str(source, old_format))
 
     def alphabet(self) -> set[str]:
         alphabet = set()

@@ -55,9 +55,12 @@ def test_coverage():
 def test_encode_1():
     strings_en = Aseini.load(os.path.join(assets_dir, 'en.ini'))
     strings_en['blank_section'] = {}
-    text = strings_en.encode_str()
+    text1 = strings_en.encode_str()
     text2 = _read_str(os.path.join(assets_dir, 'en-clean.ini'))
-    assert text == text2
+    assert text1 == text2
+    text3 = strings_en.encode_str(old_format=True)
+    text4 = _read_str(os.path.join(assets_dir, 'en.ini'))
+    assert text3 == text4
 
 
 def test_encode_2():
